@@ -17,7 +17,6 @@ console.log('JWT_EXPIRES', `${process.env.APP_SECRET}`);
     PassportModule,
     JwtModule.register({
       secret: process.env.APP_SECRET,
-      // signOptions: { expiresIn: '',
       signOptions: { expiresIn: process.env.JWT_EXPIRES },
     }),
   ],
