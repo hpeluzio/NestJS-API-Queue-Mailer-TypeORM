@@ -4,13 +4,15 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UsersCreateDto } from './entities/dto/users.create.dto';
+import { UsersCreateDto } from './entities/dto/user.create.dto';
 import { Users } from './entities/users.entity';
 import { CreateUserService } from './services/createuser.service';
+import { UpdateUserService } from './services/updateuser.service';
 import { FindAllService } from './services/findall.service';
 import { FindOneService } from './services/findone.service';
 
@@ -20,6 +22,7 @@ export class UsersController {
     private findAllService: FindAllService,
     private findOneService: FindOneService,
     private createUserService: CreateUserService,
+    private updateUserService: UpdateUserService,
   ) {}
 
   @Get('/')
@@ -34,6 +37,16 @@ export class UsersController {
 
   @Post('/')
   async create(
+    @Res() res: Response,
+    @Body() data: UsersCreateDto,
+  ): Promise<Response> {
+    console.log(data);
+    const result = await this.createUserService.exec(data);
+
+    return res.status(HttpStatus.CREATED).send(result);
+  }
+  @Patch('/:id')
+  async update(
     @Res() res: Response,
     @Body() data: UsersCreateDto,
   ): Promise<Response> {

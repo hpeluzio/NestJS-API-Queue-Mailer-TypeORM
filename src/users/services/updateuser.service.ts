@@ -7,7 +7,7 @@ import { ResultDto } from 'src/common/dto/result.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class CreateUserService {
+export class UpdateUserService {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
