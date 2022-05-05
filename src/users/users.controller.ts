@@ -1,18 +1,22 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { Users } from './entities/users.entity';
-import { UsersService } from './services/users.service';
+import { FindAllService } from './services/findall.service';
+import { FindOneService } from './services/findone.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private findAllService: FindAllService,
+    private findOneService: FindOneService,
+  ) {}
 
   @Get('/')
   async findAll(): Promise<Users[]> {
-    return this.usersService.findAll();
+    return this.findAllService.execute();
   }
 
   @Get(':email')
   async findOne(@Param('email') email: string): Promise<Users[]> {
-    return this.usersService.findOne(email);
+    return this.findOneService.exec(email);
   }
 }

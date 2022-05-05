@@ -5,17 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 // import { UsersCreateDto } from 'src/users/models/dto/users.create.dto';
 
 @Injectable()
-export class UsersService {
+export class FindOneService {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async findOne(email: string): Promise<Users | undefined | any> {
+  async exec(email: string): Promise<Users | undefined | any> {
     return await this.usersRepository.findOne({ email: email });
-  }
-
-  async findAll(): Promise<Users | undefined | any> {
-    return await this.usersRepository.find();
   }
 }
