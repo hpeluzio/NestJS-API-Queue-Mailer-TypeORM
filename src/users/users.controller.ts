@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersCreateDto } from './entities/dto/user.create.dto';
@@ -15,6 +17,8 @@ import { CreateUserService } from './services/createuser.service';
 import { UpdateUserService } from './services/updateuser.service';
 import { FindAllService } from './services/findall.service';
 import { FindOneService } from './services/findone.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UsersUpdateDto } from './entities/dto/user.update.dto';
 
 @Controller('users')
 export class UsersController {
@@ -45,13 +49,17 @@ export class UsersController {
 
     return res.status(HttpStatus.CREATED).send(result);
   }
+
+  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   async update(
+    @Request() req,
     @Res() res: Response,
-    @Body() data: UsersCreateDto,
+    @Body() body: UsersUpdateDto,
   ): Promise<Response> {
-    console.log(data);
-    const result = await this.createUserService.exec(data);
+    console.log('req.user: ', req.user);
+    console.log('body: ', body);
+    const result = await this.createUserService.exec(body);
 
     return res.status(HttpStatus.CREATED).send(result);
   }

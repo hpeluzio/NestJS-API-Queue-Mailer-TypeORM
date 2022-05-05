@@ -22,6 +22,7 @@ export class AuthService {
 
     if (bcrypt.compareSync(pass, user.password)) {
       const { password, ...result } = user;
+      console.log('result', result);
       return result;
     }
 
