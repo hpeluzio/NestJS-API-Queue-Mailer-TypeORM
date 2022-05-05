@@ -33,10 +33,24 @@ export class UsersController {
   }
 
   @Post('/')
-  async create(@Res() res: Response, @Body() data: any): Promise<Response> {
+  async create(
+    @Res() res: Response,
+    @Body() data: UsersCreateDto,
+  ): Promise<Response> {
     console.log(data);
     const result = await this.createUserService.exec(data);
 
     return res.status(HttpStatus.CREATED).send(result);
+  }
+
+  // Testing validation pipe
+  @Post('/testing')
+  async testing(
+    @Res() res: Response,
+    @Body() data: UsersCreateDto,
+  ): Promise<Response> {
+    console.log(data);
+
+    return res.status(HttpStatus.CREATED).send(data);
   }
 }
