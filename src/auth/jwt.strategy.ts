@@ -1,13 +1,11 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as dotenv from 'dotenv';
-dotenv.config();
+
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { FindOneService } from 'src/users/services/findone.service';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
