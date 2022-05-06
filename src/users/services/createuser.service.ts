@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from 'src/users/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UsersCreateDto } from '../entities/dto/user.create.dto';
+import { UserCreateDto } from '../entities/dto/user.create.dto';
 import { ResultDto } from 'src/common/dto/result.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -13,7 +13,7 @@ export class CreateUserService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async exec(data: UsersCreateDto): Promise<ResultDto> {
+  async exec(data: UserCreateDto): Promise<ResultDto> {
     if (data.password != data.confirm_password) {
       throw new HttpException(
         `Password doesn't match.`,
@@ -32,7 +32,7 @@ export class CreateUserService {
     try {
       const newUser = new Users();
       newUser.email = data.email;
-      newUser.password = bcrypt.hashSync(data.password, 8);
+      newUser.password = bcrypt.hashSync(data.password, 10);
 
       await this.usersRepository.save(newUser);
 

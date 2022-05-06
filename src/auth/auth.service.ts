@@ -13,28 +13,33 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.findOneService.exec(email);
 
+    // console.log('AuthService : validateUser()');
+    // console.log('user: ', user);
+
     if (bcrypt.compareSync(pass, user.password)) {
-      const { password, ...result } = user;
-      return result;
+      // const { password, ...result } = user;
+      return user;
     }
 
     return null;
   }
 
   async login(user: any) {
-    const { id, email, role, is_active, subscription, created_at, updated_at } =
-      user;
+    console.log('login: user: ', user);
+    console.log('login: user: ', user.password);
+    const { id, email, password, role, is_active } = user;
+
+    const access_token = this.jwtService.sign({
+      id,
+      email,
+      password,
+      role,
+      is_active,
+    });
 
     return {
-      access_token: this.jwtService.sign({
-        id,
-        email,
-        role,
-        is_active,
-        subscription,
-        created_at,
-        updated_at,
-      }),
+      access_token,
+      ...user,
     };
   }
 }

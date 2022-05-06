@@ -6,19 +6,20 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Request,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UsersCreateDto } from './entities/dto/user.create.dto';
+import { UserCreateDto } from './entities/dto/user.create.dto';
 import { Users } from './entities/users.entity';
 import { CreateUserService } from './services/createuser.service';
 import { UpdateUserService } from './services/updateuser.service';
 import { FindAllService } from './services/findall.service';
 import { FindOneService } from './services/findone.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { UsersUpdateDto } from './entities/dto/user.update.dto';
+import { UserUpdateDto } from './entities/dto/user.update.dto';
 
 @Controller('users')
 export class UsersController {
@@ -42,7 +43,7 @@ export class UsersController {
   @Post('/')
   async create(
     @Res() res: Response,
-    @Body() data: UsersCreateDto,
+    @Body() data: UserCreateDto,
   ): Promise<Response> {
     console.log(data);
     const result = await this.createUserService.exec(data);
@@ -51,15 +52,16 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('/:id')
+  @Put('/:id')
   async update(
     @Request() req,
     @Res() res: Response,
-    @Body() body: UsersUpdateDto,
+    @Param('id') id: string,
+    @Body() body: UserUpdateDto,
   ): Promise<Response> {
-    console.log('req.user: ', req.user);
-    console.log('body: ', body);
-    const result = await this.createUserService.exec(body);
+    // console.log('req.user: ', req.user);
+    // console.log('body: ', body);
+    const result = await this.updateUserService.exec(id, body, req.user);
 
     return res.status(HttpStatus.CREATED).send(result);
   }
@@ -68,7 +70,7 @@ export class UsersController {
   @Post('/testing')
   async testing(
     @Res() res: Response,
-    @Body() data: UsersCreateDto,
+    @Body() data: UserCreateDto,
   ): Promise<Response> {
     console.log(data);
 

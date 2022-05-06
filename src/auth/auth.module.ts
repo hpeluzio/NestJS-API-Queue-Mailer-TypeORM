@@ -6,10 +6,9 @@ import { LocalStrategy } from './local.strategy';
 import { AuthController } from 'src/auth/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 dotenv.config();
-
-console.log('JWT_EXPIRES', `${process.env.APP_SECRET}`);
 
 @Module({
   imports: [
@@ -20,7 +19,7 @@ console.log('JWT_EXPIRES', `${process.env.APP_SECRET}`);
       signOptions: { expiresIn: process.env.JWT_EXPIRES },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService],
   controllers: [AuthController],
 })
 export class AuthModule {}
