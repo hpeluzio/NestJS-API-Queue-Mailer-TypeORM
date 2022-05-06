@@ -13,8 +13,8 @@ export class CreateUserService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async exec(data: UserCreateDto): Promise<ResultDto> {
-    if (data.password != data.confirm_password) {
+  async exec(body: UserCreateDto): Promise<ResultDto> {
+    if (body.password != body.confirm_password) {
       throw new HttpException(
         `Password doesn't match.`,
         HttpStatus.BAD_REQUEST,
@@ -22,7 +22,7 @@ export class CreateUserService {
     }
 
     const userExists = await this.usersRepository.findOne({
-      email: data.email,
+      email: body.email,
     });
 
     if (userExists) {
@@ -31,8 +31,8 @@ export class CreateUserService {
 
     try {
       const newUser = new Users();
-      newUser.email = data.email;
-      newUser.password = bcrypt.hashSync(data.password, 10);
+      newUser.email = body.email;
+      newUser.password = bcrypt.hashSync(body.password, 10);
 
       await this.usersRepository.save(newUser);
 
