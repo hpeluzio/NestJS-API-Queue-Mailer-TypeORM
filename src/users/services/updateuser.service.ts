@@ -35,9 +35,9 @@ export class UpdateUserService {
     }
 
     try {
-      // userToBeUpdated.email = body.email;
-      // userToBeUpdated.password = bcrypt.hashSync(body.password, 10);
-      // await this.usersRepository.save(userToBeUpdated);
+      userToBeUpdated.email = body.email;
+      userToBeUpdated.password = bcrypt.hashSync(body.password, 10);
+      await this.usersRepository.save(userToBeUpdated);
 
       return <ResultDto>{
         status: true,

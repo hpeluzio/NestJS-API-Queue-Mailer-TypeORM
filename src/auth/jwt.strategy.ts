@@ -28,9 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(req: Request, payload: any) {
     const rawToken = req.headers['authorization'].split(' ')[1];
 
-    const decodedJwtAccessToken = JSON.parse(
-      JSON.stringify(this.jwtService.decode(rawToken)),
-    );
+    const decodedJwtAccessToken: any = this.jwtService.decode(rawToken);
 
     if (!rawToken) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
