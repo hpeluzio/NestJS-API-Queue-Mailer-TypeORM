@@ -4,7 +4,6 @@ import {
   Get,
   HttpStatus,
   Param,
-  Patch,
   Post,
   Put,
   Request,
@@ -20,6 +19,8 @@ import { FindAllService } from './services/findall.service';
 import { FindOneService } from './services/findone.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserUpdateDto } from './entities/dto/user.update.dto';
+import { CheckEmailService } from './services/checkemail.service';
+import { EmailDto } from './entities/dto/email.dto';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +29,7 @@ export class UsersController {
     private findOneService: FindOneService,
     private createUserService: CreateUserService,
     private updateUserService: UpdateUserService,
+    private checkEmailService: CheckEmailService,
   ) {}
 
   @Get('/')
@@ -62,6 +64,19 @@ export class UsersController {
     // console.log('req.user: ', req.user);
     // console.log('body: ', body);
     const result = await this.updateUserService.exec(id, body, req.user);
+
+    return res.status(HttpStatus.CREATED).send(result);
+  }
+
+  @Post('/checkemail')
+  async checkemail(
+    @Res() res: Response,
+    @Param('id') id: string,
+    @Body() body: EmailDto,
+  ): Promise<Response> {
+    console.log('checkemail body: ', body);
+
+    const result = await this.checkEmailService.exec(body.email);
 
     return res.status(HttpStatus.CREATED).send(result);
   }
