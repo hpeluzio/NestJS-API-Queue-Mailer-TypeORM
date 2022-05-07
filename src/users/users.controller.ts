@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Request,
@@ -21,6 +22,9 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserUpdateDto } from './entities/dto/user.update.dto';
 import { CheckEmailService } from './services/checkemail.service';
 import { EmailDto } from './entities/dto/email.dto';
+import { Role } from './entities/constants/role.enum';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -37,8 +41,9 @@ export class UsersController {
     return this.findAllService.execute();
   }
 
-  @Get(':email')
+  @Get('/:email')
   async findOne(@Param('email') email: string): Promise<Users[]> {
+    console.log('email');
     return this.findOneService.exec(email);
   }
 
@@ -83,12 +88,21 @@ export class UsersController {
 
   // Testing validation pipe
   @Post('/testing')
-  async testing(
+  async testingValidationPipe(
     @Res() res: Response,
     @Body() data: UserCreateDto,
   ): Promise<Response> {
     console.log(data);
 
     return res.status(HttpStatus.CREATED).send(data);
+  }
+
+  // Testing role
+  @Get('/role/role')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER, Role.ADMIN)
+  async testingRole(@Res() res: Response): Promise<Response> {
+    console.log('Role: ', Role.ADMIN);
+    return res.status(HttpStatus.OK).send(Role.ADMIN);
   }
 }
