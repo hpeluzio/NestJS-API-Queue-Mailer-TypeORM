@@ -5,13 +5,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { FindOneService } from 'src/users/services/findone.service';
+import { FindUserByEmailService } from 'src/users/services/finduserbyemail.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    private readonly findOneService: FindOneService,
+    private readonly findUserByEmailService: FindUserByEmailService,
     private readonly configService: ConfigService,
     private jwtService: JwtService,
   ) {
@@ -34,7 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
 
-    const user = await this.findOneService.exec(payload.email);
+    const user = await this.findUserByEmailService.exec(payload.email);
 
     if (!user) {
       throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);

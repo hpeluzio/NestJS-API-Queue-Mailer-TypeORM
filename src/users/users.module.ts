@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { UsersController } from 'src/users/users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
-import { FindAllService } from 'src/users/services/findall.service';
-import { FindOneService } from 'src/users/services/findone.service';
+import { FindAllUsersService } from 'src/users/services/findallusers.service';
+import { FindUserByEmailService } from 'src/users/services/finduserbyemail.service';
 import { CreateUserService } from 'src/users/services/createuser.service';
 import { UpdateUserService } from 'src/users/services/updateuser.service';
 import { CheckEmailService } from 'src/users/services/checkemail.service';
@@ -12,8 +12,8 @@ import { GetUserRolesService } from 'src/users/services/getuserroles.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Users])],
   providers: [
-    FindOneService,
-    FindAllService,
+    FindUserByEmailService,
+    FindAllUsersService,
     CreateUserService,
     UpdateUserService,
     CheckEmailService,
@@ -21,8 +21,8 @@ import { GetUserRolesService } from 'src/users/services/getuserroles.service';
   ],
   controllers: [UsersController],
   exports: [
-    FindOneService,
-    FindAllService,
+    FindUserByEmailService,
+    FindAllUsersService,
     CreateUserService,
     UpdateUserService,
     CheckEmailService,
