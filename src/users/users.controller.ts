@@ -52,7 +52,6 @@ export class UsersController {
     @Res() res: Response,
     @Body() data: UserCreateDto,
   ): Promise<Response> {
-    console.log(data);
     const result = await this.createUserService.exec(data);
 
     return res.status(HttpStatus.CREATED).send(result);
@@ -79,8 +78,6 @@ export class UsersController {
     @Param('id') id: string,
     @Body() body: EmailDto,
   ): Promise<Response> {
-    console.log('checkemail body: ', body);
-
     const result = await this.checkEmailService.exec(body.email);
 
     return res.status(HttpStatus.CREATED).send(result);
@@ -92,17 +89,16 @@ export class UsersController {
     @Res() res: Response,
     @Body() data: UserCreateDto,
   ): Promise<Response> {
-    console.log(data);
-
     return res.status(HttpStatus.CREATED).send(data);
   }
 
   // Testing role
   @Get('/role/role')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.USER, Role.ADMIN)
+  // @Roles(Role.USER)
+  @Roles(Role.ADMIN)
+  // @Roles(Role.USER, Role.ADMIN)
   async testingRole(@Res() res: Response): Promise<Response> {
-    console.log('Role: ', Role.ADMIN);
     return res.status(HttpStatus.OK).send(Role.ADMIN);
   }
 }

@@ -7,6 +7,7 @@ import { FindOneService } from 'src/users/services/findone.service';
 import { CreateUserService } from 'src/users/services/createuser.service';
 import { UpdateUserService } from 'src/users/services/updateuser.service';
 import { CheckEmailService } from 'src/users/services/checkemail.service';
+import { GetUserRolesService } from 'src/users/services/getuserroles.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Users])],
@@ -16,6 +17,7 @@ import { CheckEmailService } from 'src/users/services/checkemail.service';
     CreateUserService,
     UpdateUserService,
     CheckEmailService,
+    GetUserRolesService,
   ],
   controllers: [UsersController],
   exports: [
@@ -24,6 +26,7 @@ import { CheckEmailService } from 'src/users/services/checkemail.service';
     CreateUserService,
     UpdateUserService,
     CheckEmailService,
+    GetUserRolesService,
   ],
 })
 export class UsersModule {}
