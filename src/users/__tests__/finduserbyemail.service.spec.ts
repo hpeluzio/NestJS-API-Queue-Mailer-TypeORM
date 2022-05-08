@@ -5,7 +5,7 @@ import { Users } from '../entities/users.entity';
 import { FindUserByEmailService } from '../services/finduserbyemail.service';
 import { mockRepository } from '../../common/__test__/mock.repository';
 
-describe('FindOneService', () => {
+describe('FindUserByEmailService', () => {
   let service: FindUserByEmailService;
 
   beforeAll(async () => {

@@ -37,7 +37,7 @@ export class UsersController {
 
   @Get('/')
   async findAllUsers(): Promise<Users[]> {
-    return this.findAllUsersService.execute();
+    return this.findAllUsersService.exec();
   }
 
   @Get('/:email')
