@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import TestUtil from '../../common/__test__/TestUtil';
 import { Users } from '../entities/users.entity';
-import { FindUserByEmailService } from '../services/finduserbyemail.service';
+import { CheckEmailService } from '../services/checkemail.service';
 import { mockRepository } from '../../common/__test__/mock.repository';
-import { NotFoundException } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 
-describe('FindUserByEmailService', () => {
-  let service: FindUserByEmailService;
+describe('CheckEmailService', () => {
+  let service: CheckEmailService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        FindUserByEmailService,
+        CheckEmailService,
         {
           provide: getRepositoryToken(Users),
           useValue: mockRepository,
@@ -20,7 +20,7 @@ describe('FindUserByEmailService', () => {
       ],
     }).compile();
 
-    service = module.get<FindUserByEmailService>(FindUserByEmailService);
+    service = module.get<CheckEmailService>(CheckEmailService);
   });
 
   it('should be defined', () => {
@@ -28,21 +28,18 @@ describe('FindUserByEmailService', () => {
   });
 
   describe('When search user by email', () => {
-    it('should find one user', async () => {
-      const userMock = TestUtil.giveAMeAValidUser();
-
-      mockRepository.findOne.mockReturnValue(userMock);
-      const userFound = await service.exec(userMock.email);
-
-      expect(userFound).toEqual(userMock);
+    it('should find one user and return NotFoundException', async () => {
+      mockRepository.findOne.mockReturnValue(null);
+      expect(service.exec('test@v.com')).rejects.toBeInstanceOf(HttpException);
       expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
-    it('should return null with NotFoundException', async () => {
+    it('should return resultDto', async () => {
       mockRepository.findOne.mockReturnValue(null);
-      expect(service.exec('test@v.com')).rejects.toBeInstanceOf(
-        NotFoundException,
-      );
+      const result = await service.exec('wherever@email.com');
+
+      expect(result).toHaveProperty('statusCode', 200);
+      expect(result).toHaveProperty('available', true);
       expect(mockRepository.findOne).toHaveBeenCalledTimes(2);
     });
   });
