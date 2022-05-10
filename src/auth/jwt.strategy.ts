@@ -5,7 +5,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { FindUserByEmailService } from 'src/users/services/finduserbyemail.service';
+import { FindUserByEmailService } from '../users/services/finduserbyemail.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

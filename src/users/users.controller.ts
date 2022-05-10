@@ -17,13 +17,13 @@ import { CreateUserService } from './services/createuser.service';
 import { UpdateUserService } from './services/updateuser.service';
 import { FindAllUsersService } from './services/findallusers.service';
 import { FindUserByEmailService } from './services/finduserbyemail.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserUpdateDto } from './entities/dto/user.update.dto';
 import { CheckEmailService } from './services/checkemail.service';
 import { EmailDto } from './entities/dto/email.dto';
 import { Role } from './entities/constants/role.enum';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('users')
 export class UsersController {
